@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto update(ItemDto itemDto, Long userId) {
-        if(!itemRepository.contains(itemDto.getId())) {
+        if (!itemRepository.contains(itemDto.getId())) {
             throw new NotFoundException("Предмет не найден с таким id: " + itemDto.getId());
         }
         if (!userRepository.contains(userId)) {
@@ -47,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto getById(Long itemId) {
-        if(!itemRepository.contains(itemId)) {
+        if (!itemRepository.contains(itemId)) {
             throw new NotFoundException("Предмет не найден с таким id: " + itemId);
         }
         return itemMapper.toDto(itemRepository.getById(itemId));

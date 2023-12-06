@@ -79,7 +79,7 @@ public class UserRepositoryImpl implements UserRepository {
         return users.containsKey(userId);
     }
 
-    private Boolean isEmailUnique (User user) {
+    private Boolean isEmailUnique(User user) {
         return users.get(user.getId()).getEmail().equals(user.getEmail()) ||
                 !usersEmails.contains(user.getEmail());
     }

@@ -12,6 +12,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
     @Override
     public UserDto create(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAll() {
         List<UserDto> users = new ArrayList<>();
-        for(User user : userRepository.getAll()) {
+        for (User user : userRepository.getAll()) {
             users.add(userMapper.toDto(user));
         }
         return users;

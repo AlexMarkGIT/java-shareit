@@ -63,7 +63,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     public List<Item> search(String searchText) {
         List<Item> itemsForSearch = new ArrayList<>();
         for (Item item : items.values()) {
-            if(item.getAvailable()) {
+            if (item.getAvailable()) {
                 if ((item.getName() + item.getDescription()).toLowerCase().contains(searchText)) {
                     itemsForSearch.add(item);
                 }
