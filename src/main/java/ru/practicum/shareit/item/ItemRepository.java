@@ -16,6 +16,6 @@ public interface ItemRepository {
     List<Item> search(String searchText);
 
     Boolean contains(Long itemId);
-    
+
     Boolean isItemWasPostedByUser(Long itemId, Long userId);
 }
