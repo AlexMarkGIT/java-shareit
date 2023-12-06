@@ -8,9 +8,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping(path = "/users")
 @Slf4j
@@ -20,35 +17,31 @@ public class UserController {
 
     @PostMapping
     public UserDto create(@Valid @RequestBody UserDto userDto) {
-        log.info("Создание пользователя...");
-        UserDto user = userService.create(userDto);
+        log.info("Создание пользователя с email: " + userDto.getEmail());
+        UserDto createdUserDto = userService.create(userDto);
         log.info("Пользователь создан");
-        return user;
+        return createdUserDto;
     }
 
     @GetMapping
     public List<UserDto> getAll() {
         log.info("Запрос всех пользователей...");
-        List<UserDto> users = userService.getAll();
-        log.info("Список пользователей отправлен");
-        return users;
+        return userService.getAll();
     }
 
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable Long id) {
         log.info("Запрос пользователя с id: " + id + "...");
-        UserDto user = userService.getById(id);
-        log.info("Пользователь отправлен");
-        return  user;
+        return  userService.getById(id);
     }
 
     @PatchMapping("/{id}")
     public UserDto update(@RequestBody UserDto userDto, @PathVariable Long id) {
         log.info("Запрос на обновление пользователя с id: " + id + "...");
         userDto.setId(id);
-        UserDto user = userService.update(userDto);
+        UserDto updatedUserDto = userService.update(userDto);
         log.info("Пользователь обновлен");
-        return user;
+        return updatedUserDto;
     }
 
     @DeleteMapping("/{id}")
