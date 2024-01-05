@@ -34,8 +34,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto create(ItemDto itemDto, Long userId) {
-        User itemOwner = userRepository.findById(userId).
-                orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
+        User itemOwner = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
         Item item = itemMapper.toEntity(itemDto);
         item.setOwner(itemOwner);
@@ -46,8 +46,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto update(ItemDto itemDto, Long userId) {
 
-        Item item = itemRepository.findById(itemDto.getId()).
-                orElseThrow(() -> new NotFoundException("Вещь не найдена с id: " + itemDto.getId()));
+        Item item = itemRepository.findById(itemDto.getId())
+                .orElseThrow(() -> new NotFoundException("Вещь не найдена с id: " + itemDto.getId()));
 
         if (!item.getOwner().getId().equals(userId)) {
             throw new NotFoundException("Вещь не принадлежит пользователю с id: " + userId);

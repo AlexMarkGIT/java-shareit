@@ -18,30 +18,35 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllByBooker(Long userId);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where b.booker_id = ?1 and ?2 between b.start_date and b.end_date " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllCurrentByBooker(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where b.booker_id = ?1 and b.end_date < ?2 " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllPastByBooker(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where b.booker_id = ?1 and b.start_date > ?2 " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllFutureByBooker(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where b.booker_id = ?1 and b.status = 'WAITING' and b.start_date > ?2 " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllWaitingByBooker(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where b.booker_id = ?1 and b.status = 'REJECTED' " +
@@ -55,30 +60,35 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllByOwner(Long userId);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where i.owner_id = ?1 and ?2 between b.start_date and b.end_date " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllCurrentByOwner(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where i.owner_id = ?1 and b.end_date < ?2 " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllPastByOwner(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where i.owner_id = ?1 and b.start_date > ?2 " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllFutureByOwner(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where i.owner_id = ?1 and b.status = 'WAITING' and b.start_date > ?2 " +
             "order by b.start_date desc",
             nativeQuery = true)
     List<Booking> findAllWaitingByOwner(Long userId, LocalDateTime now);
+
     @Query(value = "select b.* from bookings as b " +
             "join items as i on i.id = b.item_id " +
             "where i.owner_id = ?1 and b.status = 'REJECTED' " +
@@ -93,7 +103,4 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "and b.status = 'APPROVED'",
             nativeQuery = true)
     List<Booking> findByItemAndBooker(Long userId, Long itemId, LocalDateTime now);
-
-
-
 }
