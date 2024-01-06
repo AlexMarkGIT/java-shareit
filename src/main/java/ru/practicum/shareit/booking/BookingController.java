@@ -51,26 +51,16 @@ public class BookingController {
     public List<BookingDto> getAllByBooker(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @RequestParam(name = "state",
                                                    required = false,
-                                                   defaultValue = "ALL") String state) {
-        try {
-            State reqState = State.valueOf(state);
-            return bookingService.getAllByBooker(userId, reqState);
-        } catch (IllegalArgumentException e) {
-            throw new BookingException("Unknown state: UNSUPPORTED_STATUS");
-        }
+                                                   defaultValue = "ALL") State state) {
+        return bookingService.getAllByBooker(userId, state);
     }
 
     @GetMapping("/owner")
     public  List<BookingDto> getAllByOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
                                            @RequestParam(name = "state",
                                                    required = false,
-                                                   defaultValue = "ALL") String state) {
-        try {
-            State reqState = State.valueOf(state);
-            return bookingService.getAllByOwner(userId, reqState);
-        } catch (IllegalArgumentException e) {
-            throw new BookingException("Unknown state: UNSUPPORTED_STATUS");
-        }
+                                                   defaultValue = "ALL") State state) {
+        return bookingService.getAllByOwner(userId, state);
     }
 
 }
