@@ -3,9 +3,12 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemBookingDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,19 +39,16 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getById(@PathVariable Long itemId) {
-        log.info("Запрос предмета с id: " + itemId);
-        ItemDto item = itemService.getById(itemId);
-        log.info("Предмет отправлен");
-        return item;
+    public ItemBookingDto getById(@PathVariable Long itemId,
+                                  @RequestHeader("X-Sharer-User-Id") Long userId) {
+        log.info("Поиск предмета: " + itemId + " пользователем: " + userId);
+        return itemService.getById(itemId, userId);
     }
 
     @GetMapping
-    public List<ItemDto> getByUserId(@RequestHeader("X-Sharer-User-Id") Long userId) {
-        log.info("Запрос списка предметов пользователя с id: " + userId);
-        List<ItemDto> itemsByUser = itemService.getByUserId(userId);
-        log.info("Список предметов отправлен");
-        return itemsByUser;
+    public List<ItemBookingDto> getByUserId(@RequestHeader("X-Sharer-User-Id") Long userId) {
+        log.info("Поиск предметов пользователя id: " + userId);
+        return itemService.getByUserId(userId);
     }
 
     @GetMapping("/search")
@@ -58,4 +58,20 @@ public class ItemController {
         log.info("Список предметов передан");
         return  searchedItems;
     }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto createComment(@Valid @RequestBody CommentDto commentDto,
+                                    @PathVariable Long itemId,
+                                    @RequestHeader("X-Sharer-User-Id") Long userId) {
+        log.info("Добавление коммента с текстом: " + commentDto.getText() +
+                "\nк вещи: " + itemId + "\n пользователем: " + userId);
+        commentDto.setAuthorId(userId);
+        commentDto.setItemId(itemId);
+        commentDto.setCreated(LocalDateTime.now());
+        CommentDto commentDtoCreated = itemService.createComment(commentDto);
+        log.info("Комментарий добавлен");
+        return  commentDtoCreated;
+    }
+
+
 }
