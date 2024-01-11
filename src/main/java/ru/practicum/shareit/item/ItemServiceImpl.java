@@ -13,6 +13,8 @@ import ru.practicum.shareit.item.dto.ItemBookingDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
@@ -29,6 +31,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
     private final ItemMapper itemMapper;
     private final BookingMapper bookingMapper;
 
@@ -38,6 +41,13 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
         Item item = itemMapper.toEntity(itemDto);
+
+        if (itemDto.getRequestId() != null) {
+            ItemRequest itemRequest = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new NotFoundException("Запрос не найден с id: " + itemDto.getRequestId()));
+            item.setRequest(itemRequest);
+        }
+
         item.setOwner(itemOwner);
 
         return itemMapper.toDto(itemRepository.save(item));
@@ -131,6 +141,18 @@ public class ItemServiceImpl implements ItemService {
         comment.setAuthor(user);
 
         return itemMapper.toCommentDto(commentRepository.save(comment));
+    }
+
+    @Override
+    public List<ItemDto> getByRequest(Long requestId) {
+        List<Item> items = itemRepository.findAllByRequestId(requestId);
+        List<ItemDto> itemDtoList = new ArrayList<>();
+        if (items.size() != 0) {
+            for (Item item : items) {
+                itemDtoList.add(itemMapper.toDto(item));
+            }
+        }
+        return itemDtoList;
     }
 
     private ItemBookingDto setLastNextBookingsToItem(ItemBookingDto itemBookingDto) {

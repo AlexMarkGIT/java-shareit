@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingReqDto;
@@ -98,57 +100,61 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getAllByBooker(Long userId, State state) {
+    public List<BookingDto> getAllByBooker(Long userId, State state, Integer from, Integer size) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
+        Pageable pageable = PageRequest.of(from/size, size);
+
         switch (state) {
             case ALL:
-                return mapToBookingDtoList(bookingRepository.findAllByBooker(user.getId()));
+                return mapToBookingDtoList(bookingRepository.findAllByBooker(user.getId(), pageable));
             case CURRENT:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllCurrentByBooker(userId, LocalDateTime.now()));
+                        .findAllCurrentByBooker(userId, LocalDateTime.now(), pageable));
             case PAST:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllPastByBooker(userId, LocalDateTime.now()));
+                        .findAllPastByBooker(userId, LocalDateTime.now(), pageable));
             case FUTURE:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllFutureByBooker(userId, LocalDateTime.now()));
+                        .findAllFutureByBooker(userId, LocalDateTime.now(), pageable));
             case WAITING:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllWaitingByBooker(userId, LocalDateTime.now()));
+                        .findAllWaitingByBooker(userId, LocalDateTime.now(), pageable));
             case REJECTED:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllRejectedByBooker(userId));
+                        .findAllRejectedByBooker(userId, pageable));
             default:
                 throw new BookingException("Нераспознаный параметр запроса");
         }
     }
 
     @Override
-    public List<BookingDto> getAllByOwner(Long userId, State state) {
+    public List<BookingDto> getAllByOwner(Long userId, State state, Integer from, Integer size) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
+
+        Pageable pageable = PageRequest.of(from/size, size);
 
         switch (state) {
             case ALL:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllByOwner(user.getId()));
+                        .findAllByOwner(user.getId(), pageable));
             case CURRENT:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllCurrentByOwner(userId, LocalDateTime.now()));
+                        .findAllCurrentByOwner(userId, LocalDateTime.now(), pageable));
             case PAST:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllPastByOwner(userId, LocalDateTime.now()));
+                        .findAllPastByOwner(userId, LocalDateTime.now(), pageable));
             case FUTURE:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllFutureByOwner(userId, LocalDateTime.now()));
+                        .findAllFutureByOwner(userId, LocalDateTime.now(), pageable));
             case WAITING:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllWaitingByOwner(userId, LocalDateTime.now()));
+                        .findAllWaitingByOwner(userId, LocalDateTime.now(), pageable));
             case REJECTED:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllRejectedByOwner(userId));
+                        .findAllRejectedByOwner(userId, pageable));
             default:
                 throw new BookingException("Нераспознаный параметр запроса");
 
