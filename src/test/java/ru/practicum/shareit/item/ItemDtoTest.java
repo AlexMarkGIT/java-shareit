@@ -25,7 +25,9 @@ public class ItemDtoTest {
     private JacksonTester<ItemBookingDto> jsonItemBookingDto;
     @Autowired
     private JacksonTester<CommentDto> jsonCommentDto;
-    private final LocalDateTime testTime = LocalDateTime.now().withNano(0);
+    //private final LocalDateTime testTime = LocalDateTime.now().withSecond(0).withNano(0);
+
+    private final LocalDateTime testTime = LocalDateTime.of(2024,1,1,0,0,0);
 
     @Test
     @SneakyThrows
@@ -140,7 +142,7 @@ public class ItemDtoTest {
         assertThat(jsonResult)
                 .extractingJsonPathNumberValue("$.itemId").isEqualTo(1);
         assertThat(jsonResult)
-                .extractingJsonPathStringValue("$.created").isEqualTo(testTime.toString());
+                .extractingJsonPathStringValue("$.created").isEqualTo("2024-01-01T00:00:00");
         assertThat(jsonResult)
                 .extractingJsonPathStringValue("$.authorName").isEqualTo("name");
         assertThat(jsonResult)
