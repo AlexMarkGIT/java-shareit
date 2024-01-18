@@ -63,7 +63,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         List<ItemRequestRespDto> requests = new ArrayList<>();
         List<ItemRequest> requestsByUser =
                 itemRequestRepository.findAllByUserIdNotOrderByCreatedDesc(user.getId(),
-                        PageRequest.of(from/size, size));
+                        PageRequest.of(from / size, size));
 
         if (requestsByUser.size() != 0) {
             for (ItemRequest request : requestsByUser) {

@@ -60,6 +60,7 @@ public class BookingServiceIntegrationTest {
             .end(testTime.plusDays(6))
             .itemId(1L)
             .build();
+
     @Test
     @DirtiesContext
     public void bookingServiceIntegrationTest() {
