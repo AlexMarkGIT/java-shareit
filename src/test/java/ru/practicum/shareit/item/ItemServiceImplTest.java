@@ -39,8 +39,6 @@ public class ItemServiceImplTest {
     @Mock
     private BookingRepository bookingRepository;
     @Mock
-    private BookingMapper bookingMapper;
-    @Mock
     private ItemMapper itemMapper;
 
     private final User owner = new User(1L, "owner","owner@email.com");

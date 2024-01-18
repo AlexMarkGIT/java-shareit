@@ -32,14 +32,6 @@ public class RequestControllerTest {
     @MockBean
     private ItemRequestService itemRequestService;
 
-    private final ItemDto itemDto = ItemDto.builder()
-            .id(1L)
-            .name("name")
-            .description("desc")
-            .available(true)
-            .requestId(1L)
-            .build();
-
     private final ItemRequestDto itemRequestDto = ItemRequestDto.builder()
             .description("desc")
             .build();
