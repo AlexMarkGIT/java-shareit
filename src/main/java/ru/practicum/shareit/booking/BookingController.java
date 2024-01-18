@@ -55,8 +55,10 @@ public class BookingController {
                                            @RequestParam(name = "state",
                                                    required = false,
                                                    defaultValue = "ALL") State state,
-                                           @RequestParam(name = "from", defaultValue = "0") @Min(0)  Integer from,
-                                           @RequestParam(name = "size", defaultValue = "10") @Min(1) Integer size) {
+                                           @RequestParam(name = "from",
+                                                   defaultValue = "0") @Min(0)  Integer from,
+                                           @RequestParam(name = "size",
+                                                   defaultValue = "10") @Min(1) Integer size) {
         return bookingService.getAllByBooker(userId, state, from, size);
     }
 
