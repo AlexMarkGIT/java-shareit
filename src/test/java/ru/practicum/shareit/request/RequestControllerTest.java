@@ -51,7 +51,7 @@ public class RequestControllerTest {
                 .userId(1L)
                 .build();
 
-        when(itemRequestService.create(any(ItemRequestDto.class)))
+        when(itemRequestService.create(any(ItemRequestDto.class), any(LocalDateTime.class), anyLong()))
                 .thenReturn(itemRequestDtoForCheck);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/requests")

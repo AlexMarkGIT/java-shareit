@@ -11,6 +11,7 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +25,12 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestMapper mapper;
 
     @Override
-    public ItemRequestDto create(ItemRequestDto itemRequestDto) {
-        User user = userRepository.findById(itemRequestDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + itemRequestDto.getUserId()));
+    public ItemRequestDto create(ItemRequestDto itemRequestDto, LocalDateTime created, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
+        itemRequestDto.setCreated(created);
+        itemRequestDto.setUserId(userId);
         ItemRequest itemRequest = mapper.toEntity(itemRequestDto);
         itemRequest.setUser(user);
 
@@ -43,7 +46,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         List<ItemRequest> requestsByUser =
                 itemRequestRepository.findAllByUserIdOrderByCreatedDesc(user.getId());
 
-        if (requestsByUser.size() != 0) {
+        if (!requestsByUser.isEmpty()) {
             for (ItemRequest request : requestsByUser) {
                 ItemRequestRespDto itemRequestRespDto = mapper.toRespDto(request);
                 itemRequestRespDto.setItems(itemService.getByRequest(request.getId()));
@@ -65,7 +68,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 itemRequestRepository.findAllByUserIdNotOrderByCreatedDesc(user.getId(),
                         PageRequest.of(from / size, size));
 
-        if (requestsByUser.size() != 0) {
+        if (!requestsByUser.isEmpty()) {
             for (ItemRequest request : requestsByUser) {
                 ItemRequestRespDto itemRequestRespDto = mapper.toRespDto(request);
                 itemRequestRespDto.setItems(itemService.getByRequest(request.getId()));

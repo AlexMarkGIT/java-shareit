@@ -46,13 +46,13 @@ public class RequestServiceImplTest {
     private final ItemRequestDto itemRequestDto = ItemRequestDto.builder()
             .id(1L)
             .description("desc")
-            .created(LocalDateTime.now())
+            .created(testTime)
             .userId(2L)
             .build();
     private final ItemRequestRespDto itemRequestRespDto = ItemRequestRespDto.builder()
             .id(1L)
             .description("desc")
-            .created(LocalDateTime.now())
+            .created(testTime)
             .userId(2L)
             .items(List.of())
             .build();
@@ -65,14 +65,14 @@ public class RequestServiceImplTest {
         when(itemRequestRepository.save(any(ItemRequest.class))).thenReturn(itemRequest);
         when(mapper.toDto(any(ItemRequest.class))).thenReturn(itemRequestDto);
 
-        assertEquals(itemRequestDto, itemRequestService.create(itemRequestDto));
+        assertEquals(itemRequestDto, itemRequestService.create(itemRequestDto, testTime, 1L));
     }
 
     @Test
     public void createItemRequestFailByUnknownUserTest() {
         when(userRepository.findById(anyLong())).thenThrow(NotFoundException.class);
 
-        assertThrows(NotFoundException.class, () -> itemRequestService.create(itemRequestDto));
+        assertThrows(NotFoundException.class, () -> itemRequestService.create(itemRequestDto, testTime, 1L));
     }
 
     @Test

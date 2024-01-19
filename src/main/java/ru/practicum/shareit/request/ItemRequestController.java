@@ -26,9 +26,8 @@ public class ItemRequestController {
                           @RequestHeader("X-Sharer-User-Id") Long userId) {
 
         log.info("Создание запроса пользователем с id: " + userId);
-        itemRequestDto.setCreated(LocalDateTime.now());
-        itemRequestDto.setUserId(userId);
-        ItemRequestDto itemRequestDtoResp = itemRequestService.create(itemRequestDto);
+        ItemRequestDto itemRequestDtoResp
+                = itemRequestService.create(itemRequestDto, LocalDateTime.now(), userId);
         log.info("Запрос создан с id: " + itemRequestDtoResp.getId());
         return itemRequestDtoResp;
     }

@@ -43,7 +43,7 @@ public class RequestServiceIntegrationTest {
     public void itemRequestServiceIntegrationTest() {
         userRepository.save(requester);
         userRepository.save(randomUser);
-        itemRequestService.create(itemRequestDto);
+        itemRequestService.create(itemRequestDto, testTime, 1L);
 
         ItemRequestRespDto itemDtoFromService = itemRequestService.getById(1L, 1L);
         List<ItemRequestRespDto> itemDtoListAll = itemRequestService.getAll(2L, 0, 10);
