@@ -6,5 +6,5 @@ public enum State {
     FUTURE,
     PAST,
     REJECTED,
-    WAITING;
+    WAITING
 }
