@@ -29,7 +29,7 @@ public class BookingClient extends BaseClient {
         return post("", userId, bookingDto);
     }
 
-    public ResponseEntity<Object> update(Long bookingId, Long ownerId, Boolean approved) {
+    public ResponseEntity<Object> update(Long bookingId, long ownerId, Boolean approved) {
         return patch("/" + bookingId + "?approved=" + approved, ownerId);
     }
 
