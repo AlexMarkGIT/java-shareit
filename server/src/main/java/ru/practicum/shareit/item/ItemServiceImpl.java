@@ -79,15 +79,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemBookingDto getById(Long itemId, Long userId) {
 
-        LocalDateTime now = LocalDateTime.now().withNano(0);
-
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещь не найдена с таким id " + itemId));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
         if (item.getOwner().getId().equals(user.getId())) {
-            return setComments(setLastNextBookingsToItem(itemMapper.toItemBookingDto(item), now));
+            return setComments(setLastNextBookingsToItem(itemMapper.toItemBookingDto(item)));
         } else {
             return setComments(itemMapper.toItemBookingDto(item));
         }
@@ -95,8 +93,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemBookingDto> getByUserId(Long userId) {
-
-        LocalDateTime now = LocalDateTime.now().withNano(0);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
@@ -107,7 +103,7 @@ public class ItemServiceImpl implements ItemService {
         if (items.size() != 0) {
             for (Item item : items) {
                 itemBookingDtoList.add(setComments(setLastNextBookingsToItem(itemMapper
-                        .toItemBookingDto(item), now)));
+                        .toItemBookingDto(item))));
             }
         }
 
@@ -159,8 +155,9 @@ public class ItemServiceImpl implements ItemService {
         return itemDtoList;
     }
 
-    private ItemBookingDto setLastNextBookingsToItem(ItemBookingDto itemBookingDto,
-                                                     LocalDateTime now) {
+    private ItemBookingDto setLastNextBookingsToItem(ItemBookingDto itemBookingDto) {
+
+        LocalDateTime now = LocalDateTime.now();
 
         List<Booking> bookingsForItem = bookingRepository.findAllByItem_Id(itemBookingDto.getId());
         if (bookingsForItem.size() != 0) {
