@@ -97,7 +97,7 @@ public class ItemServiceImpl implements ItemService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
-        List<Item> items = itemRepository.findAllByOwnerId(user.getId());
+        List<Item> items = itemRepository.findAllByOwnerIdOrderById(user.getId());
         List<ItemBookingDto> itemBookingDtoList = new ArrayList<>();
 
         if (items.size() != 0) {

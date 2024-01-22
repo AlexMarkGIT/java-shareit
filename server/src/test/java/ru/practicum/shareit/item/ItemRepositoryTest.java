@@ -65,7 +65,7 @@ public class ItemRepositoryTest {
 
     @Test
     public void getAllByOwnerIdTest() {
-        List<Item> itemsByOwner = itemRepository.findAllByOwnerId(1L);
+        List<Item> itemsByOwner = itemRepository.findAllByOwnerIdOrderById(1L);
 
         assertEquals(1, itemsByOwner.size());
         assertTrue(itemsByOwner.contains(itemToCheck));

@@ -108,7 +108,7 @@ public class ItemServiceImplTest {
     @Test
     public void getByUserIdTest() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(owner));
-        when(itemRepository.findAllByOwnerId(1L)).thenReturn(List.of(item));
+        when(itemRepository.findAllByOwnerIdOrderById(1L)).thenReturn(List.of(item));
         when(itemMapper.toItemBookingDto(item)).thenReturn(itemBookingDto);
         when(bookingRepository.findAllByItem_Id(1L)).thenReturn(Collections.emptyList());
         when(commentRepository.findAllByItem_Id(1L)).thenReturn(Collections.emptyList());
