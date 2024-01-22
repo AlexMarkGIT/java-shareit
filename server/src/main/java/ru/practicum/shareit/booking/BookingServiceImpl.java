@@ -104,6 +104,8 @@ public class BookingServiceImpl implements BookingService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
+        LocalDateTime currentTime = LocalDateTime.now().withNano(0);
+
         Pageable pageable = PageRequest.of(from / size, size);
 
         switch (state) {
@@ -111,16 +113,16 @@ public class BookingServiceImpl implements BookingService {
                 return mapToBookingDtoList(bookingRepository.findAllByBooker(user.getId(), pageable));
             case CURRENT:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllCurrentByBooker(userId, LocalDateTime.now(), pageable));
+                        .findAllCurrentByBooker(userId, currentTime, pageable));
             case PAST:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllPastByBooker(userId, LocalDateTime.now(), pageable));
+                        .findAllPastByBooker(userId, currentTime, pageable));
             case FUTURE:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllFutureByBooker(userId, LocalDateTime.now(), pageable));
+                        .findAllFutureByBooker(userId, currentTime, pageable));
             case WAITING:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllWaitingByBooker(userId, LocalDateTime.now(), pageable));
+                        .findAllWaitingByBooker(userId, currentTime, pageable));
             case REJECTED:
                 return mapToBookingDtoList(bookingRepository
                         .findAllRejectedByBooker(userId, pageable));
@@ -134,6 +136,8 @@ public class BookingServiceImpl implements BookingService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден с id: " + userId));
 
+        LocalDateTime currentTime = LocalDateTime.now().withNano(0);
+
         Pageable pageable = PageRequest.of(from / size, size);
 
         switch (state) {
@@ -142,16 +146,16 @@ public class BookingServiceImpl implements BookingService {
                         .findAllByOwner(user.getId(), pageable));
             case CURRENT:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllCurrentByOwner(userId, LocalDateTime.now(), pageable));
+                        .findAllCurrentByOwner(userId, currentTime, pageable));
             case PAST:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllPastByOwner(userId, LocalDateTime.now(), pageable));
+                        .findAllPastByOwner(userId, currentTime, pageable));
             case FUTURE:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllFutureByOwner(userId, LocalDateTime.now(), pageable));
+                        .findAllFutureByOwner(userId, currentTime, pageable));
             case WAITING:
                 return mapToBookingDtoList(bookingRepository
-                        .findAllWaitingByOwner(userId, LocalDateTime.now(), pageable));
+                        .findAllWaitingByOwner(userId, currentTime, pageable));
             case REJECTED:
                 return mapToBookingDtoList(bookingRepository
                         .findAllRejectedByOwner(userId, pageable));
