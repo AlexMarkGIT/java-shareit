@@ -6,10 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingReqDto;
-import ru.practicum.shareit.exception.BookingException;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -21,14 +18,11 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public BookingDto create(@RequestBody @Valid BookingReqDto bookingReqDto,
+    public BookingDto create(@RequestBody BookingReqDto bookingReqDto,
                              @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Бронирование вещи id: " + bookingReqDto.getItemId() + ", пользователем id: " + userId
                 + ".\nВремя старта/конца: " + bookingReqDto.getStart() + "/" + bookingReqDto.getEnd());
-        if (bookingReqDto.getStart().isAfter(bookingReqDto.getEnd()) ||
-        bookingReqDto.getStart().equals(bookingReqDto.getEnd())) {
-            throw new BookingException("Время старта должно быть раньше времени окончания");
-        }
+
         BookingDto bookingDto = bookingService.create(bookingReqDto, userId);
         log.info("Бронирование завершено с id: " + bookingDto.getId());
         return bookingDto;
@@ -56,9 +50,9 @@ public class BookingController {
                                                    required = false,
                                                    defaultValue = "ALL") State state,
                                            @RequestParam(name = "from",
-                                                   defaultValue = "0") @Min(0) Integer from,
+                                                   defaultValue = "0") Integer from,
                                            @RequestParam(name = "size",
-                                                   defaultValue = "10") @Min(1) Integer size) {
+                                                   defaultValue = "10") Integer size) {
         return bookingService.getAllByBooker(userId, state, from, size);
     }
 
@@ -67,8 +61,10 @@ public class BookingController {
                                            @RequestParam(name = "state",
                                                    required = false,
                                                    defaultValue = "ALL") State state,
-                                           @RequestParam(name = "from", defaultValue = "0") @Min(0)Integer from,
-                                           @RequestParam(name = "size", defaultValue = "10") @Min(1) Integer size) {
+                                           @RequestParam(name = "from",
+                                                   defaultValue = "0") Integer from,
+                                           @RequestParam(name = "size",
+                                                   defaultValue = "10") Integer size) {
         return bookingService.getAllByOwner(userId, state, from, size);
     }
 

@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestRespDto;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class ItemRequestController {
     private final ItemRequestService itemRequestService;
 
     @PostMapping
-    ItemRequestDto create(@RequestBody @Valid ItemRequestDto itemRequestDto,
+    ItemRequestDto create(@RequestBody ItemRequestDto itemRequestDto,
                           @RequestHeader("X-Sharer-User-Id") Long userId) {
 
         log.info("Создание запроса пользователем с id: " + userId);
@@ -39,8 +37,8 @@ public class ItemRequestController {
 
     @GetMapping("/all") //тут все запросы кроме своих от более новых к более старым
     List<ItemRequestRespDto> getAll(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                @RequestParam(name = "from", defaultValue = "0") @Min(0) Integer from,
-                                @RequestParam(name = "size", defaultValue = "10") @Min(1) Integer size) {
+                                @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return itemRequestService.getAll(userId, from, size);
     }
 
