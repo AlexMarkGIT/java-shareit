@@ -77,62 +77,6 @@ public class BookingControllerTest {
 
     @Test
     @SneakyThrows
-    public void createBookingNotValidByNullItemId() {
-        BookingReqDto bookingReqDto = BookingReqDto.builder()
-                .itemId(null)
-                .start(startTime.plusHours(1))
-                .end(startTime.plusDays(1))
-                .build();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/bookings")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1)
-                        .content(objectMapper.writeValueAsString(bookingReqDto)))
-                .andExpect(status().is4xxClientError());
-
-    }
-
-    @Test
-    @SneakyThrows
-    public void createBookingNotValidByPastStart() {
-        BookingReqDto bookingReqDto = BookingReqDto.builder()
-                .itemId(null)
-                .start(startTime.minusHours(1))
-                .end(startTime.plusDays(1))
-                .build();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/bookings")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1)
-                        .content(objectMapper.writeValueAsString(bookingReqDto)))
-                .andExpect(status().is4xxClientError());
-
-    }
-
-    @Test
-    @SneakyThrows
-    public void createBookingFailByStartIsAfterEnd() {
-        BookingReqDto bookingReqDto = BookingReqDto.builder()
-                .itemId(null)
-                .start(startTime.plusHours(1))
-                .end(startTime.plusMinutes(1))
-                .build();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/bookings")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1)
-                        .content(objectMapper.writeValueAsString(bookingReqDto)))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    @SneakyThrows
     public void updateBookingStatus() {
         bookingDto.setStatus(Status.APPROVED);
 

@@ -58,38 +58,6 @@ public class UserControllerTest {
 
     @Test
     @SneakyThrows
-    public void createUserFailByEmptyName() {
-        UserDto userDtoToCreate = UserDto.builder()
-                .name("   ")
-                .email("email@email.com")
-                .build();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDtoToCreate)))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    @SneakyThrows
-    public void createUserFailByFailEmail() {
-        UserDto userDtoToCreate = UserDto.builder()
-                .name("name")
-                .email("email$$$email.com")
-                .build();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDtoToCreate)))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    @SneakyThrows
     public void deleteUserFailByFailEmail() {
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/1"))
                 .andExpect(status().isOk());
